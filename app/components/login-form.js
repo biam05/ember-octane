@@ -1,18 +1,22 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
+import AuthService from 'shlack/services/auth';
 
 export default class LoginFormComponent extends Component {
   @tracked
   userId = null;
 
+  /**
+   * @type {AuthService}
+   */
+  @service auth;
+
   get isDisabled() {
     return !this.userId;
   }
 
-  loginAsUserWithID(val) {
-    console.log('UserId: ', val);
-  }
   /**
    *
    * @param {Event & {target: HTMLFormElement}} evt
@@ -32,7 +36,6 @@ export default class LoginFormComponent extends Component {
     const { target } = evt;
     const val = target.querySelector('select').value;
     evt.preventDefault(); // Stops default refresh when form submit
-    debugger;
-    this.loginAsUserWithID(val);
+    this.auth.loginWithUserId(val);
   }
 }
